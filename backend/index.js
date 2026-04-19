@@ -1,4 +1,5 @@
-require("dotenv").config();
+const path = require("path");
+require("dotenv").config({ path: path.resolve(__dirname, ".env") });
 const express = require("express");
 const cors = require("cors");
 const multer = require("multer");
@@ -16,41 +17,31 @@ const { TranslateClient, TranslateTextCommand } = require("@aws-sdk/client-trans
 const { BedrockRuntimeClient, InvokeModelCommand } = require("@aws-sdk/client-bedrock-runtime");
 const { initDb, insertFile, deleteFile, listFiles } = require("./db");
 
+// Set AWS region globally
+process.env.AWS_REGION = process.env.AWS_REGION || process.env.AWS_DEFAULT_REGION || "us-east-1";
+
 const app = express();
 const PORT = process.env.PORT || 4000;
 
 // --- S3 client ---
-const s3 = new S3Client({
-  region: process.env.AWS_REGION,
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  },
-});
+const s3 = new S3Client(awsConfig);
 
 const BUCKET = process.env.S3_BUCKET_NAME;
 
-if (!process.env.AWS_REGION || !process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_ACCESS_KEY || !BUCKET) {
-  console.warn("Warning: AWS configuration is incomplete. Set AWS_REGION, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, and S3_BUCKET_NAME.");
+console.log("Backend AWS config:", {
+  region: process.env.AWS_REGION,
+  bucketConfigured: !!BUCKET,
+});
+
+if (!BUCKET) {
+  console.warn("Warning: S3 bucket name is not configured. Set S3_BUCKET_NAME.");
 }
 
 // --- AWS Translate client ---
-const translator = new TranslateClient({
-  region: process.env.AWS_REGION,
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  },
-});
+const translator = new TranslateClient({});
 
 // --- AWS Bedrock client ---
-const bedrock = new BedrockRuntimeClient({
-  region: process.env.AWS_REGION,
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  },
-});
+const bedrock = new BedrockRuntimeClient({});
 
 app.use(cors());
 app.use(express.json());
@@ -641,7 +632,7 @@ app.use((err, req, res, next) => {
   res.status(400).json({ error: err.message });
 });
 
-app.listen(PORT, async () => {
+app.listen(PORT, "0.0.0.0", async () => {
   await initDb();
-  console.log(`Backend running on http://localhost:${PORT}`);
+  console.log(`Backend running on port ${PORT}`);
 });

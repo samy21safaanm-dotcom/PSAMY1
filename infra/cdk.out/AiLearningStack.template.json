@@ -1,0 +1,1036 @@
+{
+ "Description": "AI Learning App — EC2 + RDS + S3",
+ "Resources": {
+  "Vpc8378EB38": {
+   "Type": "AWS::EC2::VPC",
+   "Properties": {
+    "CidrBlock": "10.0.0.0/16",
+    "EnableDnsHostnames": true,
+    "EnableDnsSupport": true,
+    "InstanceTenancy": "default",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "AiLearningStack/Vpc"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "AiLearningStack/Vpc/Resource"
+   }
+  },
+  "VpcPublicSubnet1Subnet5C2D37C4": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "us-east-1a",
+    "CidrBlock": "10.0.0.0/24",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "AiLearningStack/Vpc/PublicSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "Vpc8378EB38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AiLearningStack/Vpc/PublicSubnet1/Subnet"
+   }
+  },
+  "VpcPublicSubnet1RouteTable6C95E38E": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "AiLearningStack/Vpc/PublicSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "Vpc8378EB38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AiLearningStack/Vpc/PublicSubnet1/RouteTable"
+   }
+  },
+  "VpcPublicSubnet1RouteTableAssociation97140677": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "VpcPublicSubnet1RouteTable6C95E38E"
+    },
+    "SubnetId": {
+     "Ref": "VpcPublicSubnet1Subnet5C2D37C4"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AiLearningStack/Vpc/PublicSubnet1/RouteTableAssociation"
+   }
+  },
+  "VpcPublicSubnet1DefaultRoute3DA9E72A": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "VpcIGWD7BA715C"
+    },
+    "RouteTableId": {
+     "Ref": "VpcPublicSubnet1RouteTable6C95E38E"
+    }
+   },
+   "DependsOn": [
+    "VpcVPCGWBF912B6E"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "AiLearningStack/Vpc/PublicSubnet1/DefaultRoute"
+   }
+  },
+  "VpcPublicSubnet1EIPD7E02669": {
+   "Type": "AWS::EC2::EIP",
+   "Properties": {
+    "Domain": "vpc",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "AiLearningStack/Vpc/PublicSubnet1"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "AiLearningStack/Vpc/PublicSubnet1/EIP"
+   }
+  },
+  "VpcPublicSubnet1NATGateway4D7517AA": {
+   "Type": "AWS::EC2::NatGateway",
+   "Properties": {
+    "AllocationId": {
+     "Fn::GetAtt": [
+      "VpcPublicSubnet1EIPD7E02669",
+      "AllocationId"
+     ]
+    },
+    "SubnetId": {
+     "Ref": "VpcPublicSubnet1Subnet5C2D37C4"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "AiLearningStack/Vpc/PublicSubnet1"
+     }
+    ]
+   },
+   "DependsOn": [
+    "VpcPublicSubnet1DefaultRoute3DA9E72A",
+    "VpcPublicSubnet1RouteTableAssociation97140677"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "AiLearningStack/Vpc/PublicSubnet1/NATGateway"
+   }
+  },
+  "VpcPublicSubnet2Subnet691E08A3": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "us-east-1b",
+    "CidrBlock": "10.0.1.0/24",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "AiLearningStack/Vpc/PublicSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "Vpc8378EB38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AiLearningStack/Vpc/PublicSubnet2/Subnet"
+   }
+  },
+  "VpcPublicSubnet2RouteTable94F7E489": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "AiLearningStack/Vpc/PublicSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "Vpc8378EB38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AiLearningStack/Vpc/PublicSubnet2/RouteTable"
+   }
+  },
+  "VpcPublicSubnet2RouteTableAssociationDD5762D8": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "VpcPublicSubnet2RouteTable94F7E489"
+    },
+    "SubnetId": {
+     "Ref": "VpcPublicSubnet2Subnet691E08A3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AiLearningStack/Vpc/PublicSubnet2/RouteTableAssociation"
+   }
+  },
+  "VpcPublicSubnet2DefaultRoute97F91067": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "VpcIGWD7BA715C"
+    },
+    "RouteTableId": {
+     "Ref": "VpcPublicSubnet2RouteTable94F7E489"
+    }
+   },
+   "DependsOn": [
+    "VpcVPCGWBF912B6E"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "AiLearningStack/Vpc/PublicSubnet2/DefaultRoute"
+   }
+  },
+  "VpcPrivateSubnet1Subnet536B997A": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "us-east-1a",
+    "CidrBlock": "10.0.2.0/24",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Private"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "Name",
+      "Value": "AiLearningStack/Vpc/PrivateSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "Vpc8378EB38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AiLearningStack/Vpc/PrivateSubnet1/Subnet"
+   }
+  },
+  "VpcPrivateSubnet1RouteTableB2C5B500": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "AiLearningStack/Vpc/PrivateSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "Vpc8378EB38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AiLearningStack/Vpc/PrivateSubnet1/RouteTable"
+   }
+  },
+  "VpcPrivateSubnet1RouteTableAssociation70C59FA6": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "VpcPrivateSubnet1RouteTableB2C5B500"
+    },
+    "SubnetId": {
+     "Ref": "VpcPrivateSubnet1Subnet536B997A"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AiLearningStack/Vpc/PrivateSubnet1/RouteTableAssociation"
+   }
+  },
+  "VpcPrivateSubnet1DefaultRouteBE02A9ED": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "VpcPublicSubnet1NATGateway4D7517AA"
+    },
+    "RouteTableId": {
+     "Ref": "VpcPrivateSubnet1RouteTableB2C5B500"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AiLearningStack/Vpc/PrivateSubnet1/DefaultRoute"
+   }
+  },
+  "VpcPrivateSubnet2Subnet3788AAA1": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "us-east-1b",
+    "CidrBlock": "10.0.3.0/24",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Private"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "Name",
+      "Value": "AiLearningStack/Vpc/PrivateSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "Vpc8378EB38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AiLearningStack/Vpc/PrivateSubnet2/Subnet"
+   }
+  },
+  "VpcPrivateSubnet2RouteTableA678073B": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "AiLearningStack/Vpc/PrivateSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "Vpc8378EB38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AiLearningStack/Vpc/PrivateSubnet2/RouteTable"
+   }
+  },
+  "VpcPrivateSubnet2RouteTableAssociationA89CAD56": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "VpcPrivateSubnet2RouteTableA678073B"
+    },
+    "SubnetId": {
+     "Ref": "VpcPrivateSubnet2Subnet3788AAA1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AiLearningStack/Vpc/PrivateSubnet2/RouteTableAssociation"
+   }
+  },
+  "VpcPrivateSubnet2DefaultRoute060D2087": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "VpcPublicSubnet1NATGateway4D7517AA"
+    },
+    "RouteTableId": {
+     "Ref": "VpcPrivateSubnet2RouteTableA678073B"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AiLearningStack/Vpc/PrivateSubnet2/DefaultRoute"
+   }
+  },
+  "VpcIGWD7BA715C": {
+   "Type": "AWS::EC2::InternetGateway",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "AiLearningStack/Vpc"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "AiLearningStack/Vpc/IGW"
+   }
+  },
+  "VpcVPCGWBF912B6E": {
+   "Type": "AWS::EC2::VPCGatewayAttachment",
+   "Properties": {
+    "InternetGatewayId": {
+     "Ref": "VpcIGWD7BA715C"
+    },
+    "VpcId": {
+     "Ref": "Vpc8378EB38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AiLearningStack/Vpc/VPCGW"
+   }
+  },
+  "VpcRestrictDefaultSecurityGroupCustomResourceC73DA2BE": {
+   "Type": "Custom::VpcRestrictDefaultSG",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E",
+      "Arn"
+     ]
+    },
+    "DefaultSecurityGroupId": {
+     "Fn::GetAtt": [
+      "Vpc8378EB38",
+      "DefaultSecurityGroup"
+     ]
+    },
+    "Account": "573631992340"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "AiLearningStack/Vpc/RestrictDefaultSecurityGroupCustomResource/Default"
+   }
+  },
+  "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ]
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+     }
+    ],
+    "Policies": [
+     {
+      "PolicyName": "Inline",
+      "PolicyDocument": {
+       "Version": "2012-10-17",
+       "Statement": [
+        {
+         "Effect": "Allow",
+         "Action": [
+          "ec2:AuthorizeSecurityGroupIngress",
+          "ec2:AuthorizeSecurityGroupEgress",
+          "ec2:RevokeSecurityGroupIngress",
+          "ec2:RevokeSecurityGroupEgress"
+         ],
+         "Resource": [
+          {
+           "Fn::Join": [
+            "",
+            [
+             "arn:",
+             {
+              "Ref": "AWS::Partition"
+             },
+             ":ec2:us-east-1:573631992340:security-group/",
+             {
+              "Fn::GetAtt": [
+               "Vpc8378EB38",
+               "DefaultSecurityGroup"
+              ]
+             }
+            ]
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "AiLearningStack/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role"
+   }
+  },
+  "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-573631992340-us-east-1",
+     "S3Key": "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200.zip"
+    },
+    "Timeout": 900,
+    "MemorySize": 128,
+    "Handler": "__entrypoint__.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs22.x",
+    "Description": "Lambda function for removing all inbound/outbound rules from the VPC default security group"
+   },
+   "DependsOn": [
+    "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "AiLearningStack/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler",
+    "aws:asset:path": "asset.7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200",
+    "aws:asset:property": "Code"
+   }
+  },
+  "FilesBucket16450113": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "BucketEncryption": {
+     "ServerSideEncryptionConfiguration": [
+      {
+       "ServerSideEncryptionByDefault": {
+        "SSEAlgorithm": "AES256"
+       }
+      }
+     ]
+    },
+    "BucketName": "ai-learning-files-573631992340",
+    "CorsConfiguration": {
+     "CorsRules": [
+      {
+       "AllowedHeaders": [
+        "*"
+       ],
+       "AllowedMethods": [
+        "GET",
+        "PUT",
+        "POST"
+       ],
+       "AllowedOrigins": [
+        "*"
+       ],
+       "MaxAge": 3000
+      }
+     ]
+    },
+    "PublicAccessBlockConfiguration": {
+     "BlockPublicAcls": true,
+     "BlockPublicPolicy": true,
+     "IgnorePublicAcls": true,
+     "RestrictPublicBuckets": true
+    }
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "AiLearningStack/FilesBucket/Resource"
+   }
+  },
+  "DbSecret685A0FA5": {
+   "Type": "AWS::SecretsManager::Secret",
+   "Properties": {
+    "GenerateSecretString": {
+     "ExcludePunctuation": true,
+     "GenerateStringKey": "password",
+     "PasswordLength": 24,
+     "SecretStringTemplate": "{\"username\":\"appuser\"}"
+    },
+    "Name": "ai-learning/db-credentials"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "AiLearningStack/DbSecret/Resource"
+   }
+  },
+  "DbSecretAttachment0609CE05": {
+   "Type": "AWS::SecretsManager::SecretTargetAttachment",
+   "Properties": {
+    "SecretId": {
+     "Ref": "DbSecret685A0FA5"
+    },
+    "TargetId": {
+     "Ref": "DatabaseB269D8BB"
+    },
+    "TargetType": "AWS::RDS::DBInstance"
+   },
+   "Metadata": {
+    "aws:cdk:path": "AiLearningStack/DbSecret/Attachment/Resource"
+   }
+  },
+  "DbSg495F8305": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "RDS security group",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "255.255.255.255/32",
+      "Description": "Disallow all traffic",
+      "FromPort": 252,
+      "IpProtocol": "icmp",
+      "ToPort": 86
+     }
+    ],
+    "VpcId": {
+     "Ref": "Vpc8378EB38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AiLearningStack/DbSg/Resource"
+   }
+  },
+  "DbSgfromAiLearningStackEc2SgCA4CAC5E543201138EDD": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "Description": "EC2 to RDS",
+    "FromPort": 5432,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "DbSg495F8305",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "SourceSecurityGroupId": {
+     "Fn::GetAtt": [
+      "Ec2SgF43886FE",
+      "GroupId"
+     ]
+    },
+    "ToPort": 5432
+   },
+   "Metadata": {
+    "aws:cdk:path": "AiLearningStack/DbSg/from AiLearningStackEc2SgCA4CAC5E:5432"
+   }
+  },
+  "DatabaseSubnetGroup7D60F180": {
+   "Type": "AWS::RDS::DBSubnetGroup",
+   "Properties": {
+    "DBSubnetGroupDescription": "Subnet group for Database database",
+    "SubnetIds": [
+     {
+      "Ref": "VpcPrivateSubnet1Subnet536B997A"
+     },
+     {
+      "Ref": "VpcPrivateSubnet2Subnet3788AAA1"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "AiLearningStack/Database/SubnetGroup/Default"
+   }
+  },
+  "DatabaseB269D8BB": {
+   "Type": "AWS::RDS::DBInstance",
+   "Properties": {
+    "AllocatedStorage": "20",
+    "BackupRetentionPeriod": 7,
+    "CopyTagsToSnapshot": true,
+    "DBInstanceClass": "db.t3.micro",
+    "DBName": "ailearning",
+    "DBSubnetGroupName": {
+     "Ref": "DatabaseSubnetGroup7D60F180"
+    },
+    "DeletionProtection": false,
+    "Engine": "postgres",
+    "EngineVersion": "15",
+    "MasterUserPassword": {
+     "Fn::Join": [
+      "",
+      [
+       "{{resolve:secretsmanager:",
+       {
+        "Ref": "DbSecret685A0FA5"
+       },
+       ":SecretString:password::}}"
+      ]
+     ]
+    },
+    "MasterUsername": {
+     "Fn::Join": [
+      "",
+      [
+       "{{resolve:secretsmanager:",
+       {
+        "Ref": "DbSecret685A0FA5"
+       },
+       ":SecretString:username::}}"
+      ]
+     ]
+    },
+    "MaxAllocatedStorage": 100,
+    "MultiAZ": false,
+    "PubliclyAccessible": false,
+    "StorageEncrypted": true,
+    "StorageType": "gp2",
+    "VPCSecurityGroups": [
+     {
+      "Fn::GetAtt": [
+       "DbSg495F8305",
+       "GroupId"
+      ]
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Snapshot",
+   "DeletionPolicy": "Snapshot",
+   "Metadata": {
+    "aws:cdk:path": "AiLearningStack/Database/Resource"
+   }
+  },
+  "Ec2SgF43886FE": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "EC2 app server",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "SecurityGroupIngress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "HTTP",
+      "FromPort": 80,
+      "IpProtocol": "tcp",
+      "ToPort": 80
+     },
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "HTTPS",
+      "FromPort": 443,
+      "IpProtocol": "tcp",
+      "ToPort": 443
+     },
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "SSH — restrict to your IP in production",
+      "FromPort": 22,
+      "IpProtocol": "tcp",
+      "ToPort": 22
+     }
+    ],
+    "VpcId": {
+     "Ref": "Vpc8378EB38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AiLearningStack/Ec2Sg/Resource"
+   }
+  },
+  "Ec2Role2FD9A272": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ec2.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/AmazonSSMManagedInstanceCore"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "AiLearningStack/Ec2Role/Resource"
+   }
+  },
+  "Ec2RoleDefaultPolicy99BC91F7": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:GetObject*",
+        "s3:GetBucket*",
+        "s3:List*",
+        "s3:DeleteObject*",
+        "s3:PutObject",
+        "s3:PutObjectLegalHold",
+        "s3:PutObjectRetention",
+        "s3:PutObjectTagging",
+        "s3:PutObjectVersionTagging",
+        "s3:Abort*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "FilesBucket16450113",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "FilesBucket16450113",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": "translate:TranslateText",
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": "bedrock:InvokeModel",
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "secretsmanager:GetSecretValue",
+        "secretsmanager:DescribeSecret"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Ref": "DbSecret685A0FA5"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "Ec2RoleDefaultPolicy99BC91F7",
+    "Roles": [
+     {
+      "Ref": "Ec2Role2FD9A272"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "AiLearningStack/Ec2Role/DefaultPolicy/Resource"
+   }
+  },
+  "AppServerInstanceProfileFDED9889": {
+   "Type": "AWS::IAM::InstanceProfile",
+   "Properties": {
+    "Roles": [
+     {
+      "Ref": "Ec2Role2FD9A272"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "AiLearningStack/AppServer/InstanceProfile"
+   }
+  },
+  "AppServer33D3A8FF": {
+   "Type": "AWS::EC2::Instance",
+   "Properties": {
+    "AvailabilityZone": "us-east-1a",
+    "BlockDeviceMappings": [
+     {
+      "DeviceName": "/dev/xvda",
+      "Ebs": {
+       "Encrypted": true,
+       "VolumeSize": 20
+      }
+     }
+    ],
+    "IamInstanceProfile": {
+     "Ref": "AppServerInstanceProfileFDED9889"
+    },
+    "ImageId": {
+     "Ref": "SsmParameterValueawsserviceamiamazonlinuxlatestal2023amikernel61x8664C96584B6F00A464EAD1953AFF4B05118Parameter"
+    },
+    "InstanceType": "t3.small",
+    "KeyName": "ai-learning-key",
+    "SecurityGroupIds": [
+     {
+      "Fn::GetAtt": [
+       "Ec2SgF43886FE",
+       "GroupId"
+      ]
+     }
+    ],
+    "SubnetId": {
+     "Ref": "VpcPublicSubnet1Subnet5C2D37C4"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "AiLearningStack/AppServer"
+     }
+    ],
+    "UserData": {
+     "Fn::Base64": "#!/bin/bash\nyum update -y\nyum install -y git nginx\ncurl -fsSL https://rpm.nodesource.com/setup_20.x | bash -\nyum install -y nodejs\nnpm install -g pm2\nmkdir -p /opt/app\nchown ec2-user:ec2-user /opt/app\ncat > /etc/nginx/conf.d/app.conf << 'NGINX'\nserver {\n    listen 80;\n    server_name _;\n\n    # Serve React build\n    root /opt/app/frontend/dist;\n    index index.html;\n\n    location / {\n        try_files $uri $uri/ /index.html;\n    }\n\n    # Proxy API to Express\n    location ~ ^/(upload|files|extract|translate|generate-lesson|generate-images|generate-simulation) {\n        proxy_pass http://127.0.0.1:4000;\n        proxy_http_version 1.1;\n        proxy_set_header Host $host;\n        proxy_set_header X-Real-IP $remote_addr;\n        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n        client_max_body_size 15M;\n    }\n}\nNGINX\nsystemctl enable nginx\nsystemctl start nginx\necho 'Bootstrap complete' > /var/log/bootstrap.log"
+    }
+   },
+   "DependsOn": [
+    "Ec2RoleDefaultPolicy99BC91F7",
+    "Ec2Role2FD9A272"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "AiLearningStack/AppServer/Resource"
+   }
+  },
+  "AppEip": {
+   "Type": "AWS::EC2::EIP",
+   "Properties": {
+    "InstanceId": {
+     "Ref": "AppServer33D3A8FF"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "AiLearningStack/AppEip"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/31Qy27CQAz8Fu7Llqb0A3hUiEsbEcS1chaTLiS7yPaCUJR/r5KlSdWqPXlmPLLHTnTyPNGTEVx5bPancWlzXWcC5qTgyu81mkTXu7NRi4PbpQuVhry0Jgu5Q2m1AW18ENxCXuKgD9qM2RsLYr3rzS14WadteQVZgeAVbiolewHBYfDaCZLD3hCT3NlMBMxHhU5UhiaQlduKfDh3Gf4V1q4gZFZrxwLOYFwVcaP4SdfzYE4xQkSNYjSEwhU4KJB0nXX8PrpFsWyBCpRv0XrDz06jaM+6XoJADox9lnh9H3w5/yUMUS1Uut74+Peupr60pnvUgL78KfmDLbFp1AbZB2oPDyy+GujB/dFKyV/sHmkOjGrGjJIJFNYV3SogqFCQWvIW5BykUc7vUR/54ZJM9eNUP46ObO2YghNbod7E+glSio0/hAIAAA=="
+   },
+   "Metadata": {
+    "aws:cdk:path": "AiLearningStack/CDKMetadata/Default"
+   }
+  }
+ },
+ "Parameters": {
+  "SsmParameterValueawsserviceamiamazonlinuxlatestal2023amikernel61x8664C96584B6F00A464EAD1953AFF4B05118Parameter": {
+   "Type": "AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>",
+   "Default": "/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-6.1-x86_64"
+  },
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Outputs": {
+  "AppPublicIp": {
+   "Description": "EC2 Elastic IP",
+   "Value": {
+    "Ref": "AppEip"
+   }
+  },
+  "AppUrl": {
+   "Description": "Application URL",
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "http://",
+      {
+       "Ref": "AppEip"
+      }
+     ]
+    ]
+   }
+  },
+  "BucketName": {
+   "Description": "S3 bucket name",
+   "Value": {
+    "Ref": "FilesBucket16450113"
+   }
+  },
+  "DbEndpoint": {
+   "Description": "RDS endpoint",
+   "Value": {
+    "Fn::GetAtt": [
+     "DatabaseB269D8BB",
+     "Endpoint.Address"
+    ]
+   }
+  },
+  "DbSecretArn": {
+   "Description": "DB credentials secret ARN",
+   "Value": {
+    "Ref": "DbSecret685A0FA5"
+   }
+  },
+  "SshCommand": {
+   "Description": "SSH command",
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "ssh ec2-user@",
+      {
+       "Ref": "AppEip"
+      }
+     ]
+    ]
+   }
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

@@ -1,0 +1,27 @@
+name: Deploy to AWS EC2
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy to EC2 via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host:        ${{ secrets.EC2_HOST }}
+          username:    ec2-user
+          key:         ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd /opt/app
+            git pull origin main
+            export AWS_REGION=${{ secrets.AWS_REGION }}
+            export S3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}
+            export DB_HOST=${{ secrets.DB_HOST }}
+            bash scripts/deploy.sh

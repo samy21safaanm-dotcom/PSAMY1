@@ -1,0 +1,36 @@
+{
+  "version": "53.0.0",
+  "files": {
+    "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
+      "displayName": "AiLearningStack/Custom::VpcRestrictDefaultSGCustomResourceProvider Code",
+      "source": {
+        "path": "asset.7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "573631992340-us-east-1-7e9f72bb": {
+          "bucketName": "cdk-hnb659fds-assets-573631992340-us-east-1",
+          "objectKey": "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200.zip",
+          "region": "us-east-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::573631992340:role/cdk-hnb659fds-file-publishing-role-573631992340-us-east-1"
+        }
+      }
+    },
+    "52564d1b1f5801e19e153c5b304b9112bac2c129a59a4af4a95ccee54a283726": {
+      "displayName": "AiLearningStack Template",
+      "source": {
+        "path": "AiLearningStack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "573631992340-us-east-1-8dee5ce9": {
+          "bucketName": "cdk-hnb659fds-assets-573631992340-us-east-1",
+          "objectKey": "52564d1b1f5801e19e153c5b304b9112bac2c129a59a4af4a95ccee54a283726.json",
+          "region": "us-east-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::573631992340:role/cdk-hnb659fds-file-publishing-role-573631992340-us-east-1"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

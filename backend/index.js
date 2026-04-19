@@ -20,9 +20,21 @@ const { initDb, insertFile, deleteFile, listFiles } = require("./db");
 // Set AWS region globally
 process.env.AWS_REGION = process.env.AWS_REGION || process.env.AWS_DEFAULT_REGION || "us-east-1";
 
+const awsConfig = {
+  region: process.env.AWS_REGION,
+};
+if (process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY) {
+  awsConfig.credentials = {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  };
+}
+
 console.log("=== DEBUG: Environment variables ===");
 console.log("AWS_REGION:", process.env.AWS_REGION);
 console.log("S3_BUCKET_NAME:", process.env.S3_BUCKET_NAME);
+console.log("AWS_ACCESS_KEY_ID:", !!process.env.AWS_ACCESS_KEY_ID);
+console.log("AWS_SECRET_ACCESS_KEY:", !!process.env.AWS_SECRET_ACCESS_KEY);
 console.log("====================================");
 
 const app = express();

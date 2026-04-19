@@ -20,6 +20,11 @@ const { initDb, insertFile, deleteFile, listFiles } = require("./db");
 // Set AWS region globally
 process.env.AWS_REGION = process.env.AWS_REGION || process.env.AWS_DEFAULT_REGION || "us-east-1";
 
+console.log("=== DEBUG: Environment variables ===");
+console.log("AWS_REGION:", process.env.AWS_REGION);
+console.log("S3_BUCKET_NAME:", process.env.S3_BUCKET_NAME);
+console.log("====================================");
+
 const app = express();
 const PORT = process.env.PORT || 4000;
 

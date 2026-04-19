@@ -38,10 +38,14 @@ if (!BUCKET) {
 }
 
 // --- AWS Translate client ---
-const translator = new TranslateClient({});
+const translator = new TranslateClient({
+  region: process.env.AWS_REGION || process.env.AWS_DEFAULT_REGION || "us-east-1"
+});
 
 // --- AWS Bedrock client ---
-const bedrock = new BedrockRuntimeClient({});
+const bedrock = new BedrockRuntimeClient({
+  region: process.env.AWS_REGION || process.env.AWS_DEFAULT_REGION || "us-east-1"
+});
 
 app.use(cors());
 app.use(express.json());
